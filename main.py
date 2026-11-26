@@ -43,6 +43,10 @@ def validate(line: str) -> None:
         raise ValueError("empty line")
     if "\n" in line or "\r" in line:
         raise ValueError("two-line line")
+    if any(ord(ch) < 32 or ord(ch) == 127 for ch in line):
+        raise ValueError("control character in line")
+    if any(ord(ch) > 127 for ch in line):
+        raise ValueError("non-ASCII character in line")
     if len(line) > MAX_CHARS:
         raise ValueError(f"over-limit line: {len(line)} > {MAX_CHARS}")
     if re.search(r"https?://|www\.", line):
